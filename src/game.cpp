@@ -7,10 +7,25 @@
 Game::Game(sf::RenderWindow *window)
     : _renderWindow{window}, _components{}
 {
-    _components.push_back( Component{ sf::Vector2i{ 200, 100 } } );
+    //_components.push_back( Component{ sf::Vector2i{ 200, 100 } } );
 }
 
 void Game::run()
+{
+    eventHandler();
+
+    for( Component & c : _components )
+    {   
+        if( CollisionController::checkCollisionPoint( c.getShape(), sf::Mouse::getPosition( *_renderWindow ) ) )
+            c.setColor( sf::Color( 180, 0, 0 ) );
+
+        if( c.selected )
+            c.setPosition( sf::Mouse::getPosition( *_renderWindow ) );
+        c.render( _renderWindow );
+    }
+}
+
+void Game::eventHandler()
 {
     sf::Event event;
     while( _renderWindow->pollEvent( event ) )
@@ -27,6 +42,19 @@ void Game::run()
                 Component newComp{ sf::Vector2i( event.mouseButton.x, event.mouseButton.y ) };
                 if( !checkCollision( newComp.getShape() ) )
                     _components.push_back( newComp );
+                else
+                {
+                    for( Component & c : _components )
+                    {
+                        if( CollisionController::checkCollisionPoint( c.getShape(), sf::Mouse::getPosition( *_renderWindow ) ) )
+                        {
+                            if( c.selected )
+                                c.selected = false;
+                            else
+                                c.selected = true;
+                        }
+                    }
+                }
             }
             break;
         
@@ -34,20 +62,12 @@ void Game::run()
             break;
         }
     }
-
-    for( Component & c : _components )
-    {   
-        if( checkCollisionPoint( c.getShape(), sf::Mouse::getPosition( *_renderWindow ) ) )
-            c.setColor( sf::Color( 180, 0, 0 ) );
-
-        c.render( _renderWindow );
-    }
 }
 
 bool Game::checkCollision(sf::RectangleShape const& shape)
 {
     for( Component const& c : _components )
-        if( checkCollisionRectangle( shape, c.getShape() ) )
+        if( CollisionController::checkCollisionRectangle( shape, c.getShape() ) )
             return true;
  
     return false;

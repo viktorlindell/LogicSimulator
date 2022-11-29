@@ -14,6 +14,7 @@ public:
     void run();
 
 private:
+    void eventHandler();
     bool checkCollision(sf::RectangleShape const& shape);
 
 public:
