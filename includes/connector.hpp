@@ -9,7 +9,8 @@ public:
     Connector(  sf::Vector2i const& pos, sf::Vector2i const& parentPos, 
                 sf::Color const& color = sf::Color(  0, 180, 0  ) );
 
-    void render(sf::RenderWindow *renderWindow);
+    bool checkCollision( sf::RenderWindow *renderWindow );
+    void render( sf::RenderWindow *renderWindow );
 
     inline void setColor( sf::Color color ) { _shape.setFillColor( color ); };
     inline sf::RectangleShape const& getShape() const { return _shape; };

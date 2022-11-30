@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-Component::Component(sf::Vector2i const& pos, sf::Color const& color)
+Component::Component( sf::Vector2i const& pos, sf::Color const& color )
     : _shape{ sf::Vector2f{ 100.f, 50.f } }, _color{ color }
 {
     _shape.setFillColor( _color );
@@ -16,15 +16,38 @@ Component::Component(sf::Vector2i const& pos, sf::Color const& color)
     _connectors.push_back( Connector{ sf::Vector2i{ +25, 25 }, (sf::Vector2i)_shape.getPosition() } );
 }
 
-void Component::render(sf::RenderWindow  *renderWindow)
+bool Component::checkCollision( sf::RenderWindow *renderWindow )
+{
+    bool connectorCollision{ false };
+    for (Connector & c : _connectors )
+    {
+        connectorCollision = c.checkCollision( renderWindow );
+        if( connectorCollision )
+            break;
+    }
+    if( !connectorCollision )
+        if( CollisionHandler::checkCollisionPoint( _shape, sf::Mouse::getPosition( *renderWindow ) ) )
+        {
+            setColor( sf::Color( 180, 0, 0 ) );
+            return true;
+        }
+
+    return false;
+}
+
+void Component::update( sf::RenderWindow *renderWindow )
+{
+    if( selected )
+        setPosition( sf::Mouse::getPosition( *renderWindow ) );
+}
+
+void Component::render( sf::RenderWindow  *renderWindow )
 {
     renderWindow->draw( _shape );
-    _shape.setFillColor( _color );
+    setColor( _color );
 
     for (Connector & c : _connectors )
     {
-        if( CollisionController::checkCollisionPoint( c.getShape(), sf::Mouse::getPosition( *renderWindow ) ) )
-            c.setColor( sf::Color( 180, 0, 0 ) );
         c.render( renderWindow );
     }
 }

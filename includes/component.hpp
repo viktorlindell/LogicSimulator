@@ -12,6 +12,8 @@ class Component
 {
 public:
     Component( sf::Vector2i const& pos, sf::Color const& color = sf::Color( 180, 180, 180 ) );
+    bool checkCollision( sf::RenderWindow *renderWindow );
+    void update( sf::RenderWindow *renderWindow );
     void render( sf::RenderWindow *renderWindow );
     void setPosition( sf::Vector2i const& newPos );
 

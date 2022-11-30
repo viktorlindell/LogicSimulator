@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace CollisionController
+namespace CollisionHandler
 {
     static bool checkCollisionPoint( sf::RectangleShape const& rect1, sf::Vector2i const& objPos )
     {
