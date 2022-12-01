@@ -1,5 +1,5 @@
 CXX = g++
-CPPFLAGS = -std=c++17 -Wall -Wextra -pedantic -Weffc++
+CPPFLAGS = -std=c++17 -Wextra -pedantic -Weffc++
 
 LIBS=-lsfml-graphics -lsfml-window -lsfml-system
 SRC=src/

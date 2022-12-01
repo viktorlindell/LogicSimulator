@@ -2,32 +2,29 @@
 #define COMPONENT_H
 
 #include "../includes/connector.hpp"
+#include "../includes/object.hpp"
 
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
 #include <vector>
 
-class Component
+class Component : public Object
 {
 public:
     Component( sf::Vector2i const& pos, sf::Color const& color = sf::Color( 180, 180, 180 ) );
-    bool checkCollision( sf::RenderWindow *renderWindow );
+
     void update( sf::RenderWindow *renderWindow );
     void render( sf::RenderWindow *renderWindow );
     void setPosition( sf::Vector2i const& newPos );
 
     // Inline functions
-    inline void setColor( sf::Color color ) { _shape.setFillColor( color ); };
-    inline sf::RectangleShape const& getShape() const { return _shape; };
+    inline std::vector<Connector*> const& getConnectors() const { return _connectors; };
 
 public:
-    bool selected{ false };    
 
 private:
-    sf::RectangleShape _shape;
-    sf::Color _color;
-    std::vector<Connector> _connectors{};
+    std::vector<Connector*> _connectors{};
 
 };
 

@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "../includes/component.hpp"
+#include "../includes/object.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -15,14 +16,14 @@ public:
 
 private:
     void eventHandler();
-    bool checkCollision(sf::RectangleShape const& shape);
 
 public:
 
 
 private:
     sf::RenderWindow *_renderWindow;
-    std::vector<Component> _components;
+    std::vector<Component*> _components;
+    Object* _selectedObject { nullptr };
 };
 
 #endif
