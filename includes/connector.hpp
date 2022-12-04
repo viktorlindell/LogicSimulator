@@ -5,10 +5,12 @@
 
 #include <SFML/Graphics.hpp>
 
+class Component;
+
 class Connector : public Object
 {
 public:
-    Connector(  sf::Vector2i const& pos, sf::Vector2i const& parentPos, 
+    Connector(  sf::Vector2i const& pos, sf::Vector2i const& parentPos, Component *parent, 
                 sf::Color const& color = sf::Color(   10, 180, 10   ) );
 
     void update( sf::RenderWindow *renderWindow ) override {};
@@ -16,10 +18,16 @@ public:
 
     inline void setPosition ( sf::Vector2i const& newPos ) { _shape.setPosition( _offset.x + newPos.x,
                                                                                 _offset.y + newPos.y ); };
+    inline void setConnection (Connector *c ) { _connection = c; };
+
+    inline Connector * const& getConnection () const { return _connection; }; 
     inline sf::Vector2f const& getPosition () const { return _shape.getPosition(); };
+    inline Component* const& getParent () const { return _parent; };
 
 private:
     sf::Vector2i _offset;
+    Component *_parent;
+    Connector *_connection{ nullptr };
 };
 
 #endif

@@ -11,9 +11,9 @@ Component::Component( sf::Vector2i const& pos, sf::Color const& color )
     _shape.setPosition( pos.x, pos.y );
     _shape.setOrigin( _shape.getSize().x / 2, _shape.getSize().y / 2 );
 
-    _connectors.push_back( new Connector{ sf::Vector2i{ -0, -25 }, (sf::Vector2i)_shape.getPosition() } );
-    _connectors.push_back( new Connector{ sf::Vector2i{ -25, 25 }, (sf::Vector2i)_shape.getPosition() } );
-    _connectors.push_back( new Connector{ sf::Vector2i{ +25, 25 }, (sf::Vector2i)_shape.getPosition() } );
+    _connectors.push_back( new Connector{ sf::Vector2i{ -0, -25 }, (sf::Vector2i)_shape.getPosition(), this } );
+    _connectors.push_back( new Connector{ sf::Vector2i{ -25, 25 }, (sf::Vector2i)_shape.getPosition(), this } );
+    _connectors.push_back( new Connector{ sf::Vector2i{ +25, 25 }, (sf::Vector2i)_shape.getPosition(), this } );
 }
 
 void Component::update( sf::RenderWindow *renderWindow )

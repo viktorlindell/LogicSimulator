@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
+#include <iostream>
 
 namespace CollisionHandler
 {
@@ -27,11 +28,7 @@ namespace CollisionHandler
         for(T *obj : container)
         {
             sf::RectangleShape rect{ obj->getShape() };
-            if( rect.getPosition().x  - rect.getSize().x / 2  < objPos.x &&
-                rect.getPosition().x  + rect.getSize().x / 2  > objPos.x &&
-                rect.getPosition().y  - rect.getSize().y / 2  < objPos.y &&
-                rect.getPosition().y  + rect.getSize().y / 2  > objPos.y 
-                )
+            if( checkCollisionPoint( rect, objPos ) )
                 return obj;
         }
 
@@ -58,11 +55,7 @@ namespace CollisionHandler
         {
             sf::RectangleShape rect1{ obj1->getShape() };
             if( obj1 != obj2 )
-                if( rect1.getPosition().x - rect1.getSize().x / 2 < rect2.getPosition().x - rect2.getSize().x / 2 + rect2.getSize().x &&
-                    rect1.getPosition().x - rect1.getSize().x / 2 + rect1.getSize().x > rect2.getPosition().x - rect2.getSize().x / 2 &&
-                    rect1.getPosition().y - rect1.getSize().x / 2 < rect2.getPosition().y - rect2.getSize().x / 2 + rect2.getSize().y &&
-                    rect1.getSize().y + rect1.getPosition().y - rect1.getSize().x / 2 > rect2.getPosition().y - rect2.getSize().x / 2
-                    )
+                if( checkCollisionRectangle( rect1, rect2 ) )
                     return obj1;
         }
 
