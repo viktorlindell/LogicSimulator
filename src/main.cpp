@@ -4,7 +4,7 @@
 
 int main()
 {
-    sf::RenderWindow renderWindow(sf::VideoMode(2000, 1400), "Logic Simulator");
+    sf::RenderWindow renderWindow(sf::VideoMode(1000, 800), "Logic Simulator");
 
     Game game{&renderWindow};
 

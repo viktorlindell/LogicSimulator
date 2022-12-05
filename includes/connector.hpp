@@ -5,6 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 
+// Forward declarations:
 class Component;
 
 class Connector : public Object
