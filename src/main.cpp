@@ -4,11 +4,11 @@
 
 int main()
 {
-    sf::RenderWindow renderWindow(sf::VideoMode(1000, 800), "Logic Simulator");
+    sf::RenderWindow renderWindow( sf::VideoMode(1000, 800), "Logic Simulator" );
 
-    Game game{&renderWindow};
+    Game game{ &renderWindow };
 
-    while (renderWindow.isOpen())
+    while ( renderWindow.isOpen() )
     {
         renderWindow.clear();
         game.run();
