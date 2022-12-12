@@ -15,22 +15,25 @@ Connector::Connector(sf::Vector2i const& pos, sf::Vector2i const& parentPos, Com
 void Connector::render( sf::RenderWindow *renderWindow )
 {
     if( _connection )
-    {
-        sf::Vector2f connectorPosition = _shape.getPosition();
-        sf::Vector2f connectionPosition = _connection->getPosition();
-
-        float lineLength = sqrt( pow( ( connectorPosition.x - connectionPosition.x ), 2 ) + pow( ( connectorPosition.y - connectionPosition.y ), 2 ) );
-
-        sf::RectangleShape line{ sf::Vector2f{ lineLength, 5 } };
-
-        float angle = 180 + atan2( connectorPosition.y  - connectionPosition.y, connectorPosition.x - connectionPosition.x ) * 180 / M_PI ;
-
-        line.rotate( angle );
-        line.setPosition( connectorPosition );
-
-        renderWindow->draw( line );
-    }
+        renderWindow->draw( createLine() );
 
     renderWindow->draw( _shape );
     _shape.setFillColor( _color );
+}
+
+sf::RectangleShape Connector::createLine()
+{
+    sf::Vector2f connectorPosition = _shape.getPosition();
+    sf::Vector2f connectionPosition = _connection->getPosition();
+
+    float lineLength = sqrt( pow( ( connectorPosition.x - connectionPosition.x ), 2 ) + pow( ( connectorPosition.y - connectionPosition.y ), 2 ) );
+
+    sf::RectangleShape line{ sf::Vector2f{ lineLength, 5 } };
+
+    float angle = 180 + atan2( connectorPosition.y  - connectionPosition.y, connectorPosition.x - connectionPosition.x ) * 180 / M_PI ;
+
+    line.rotate( angle );
+    line.setPosition( connectorPosition );
+    
+    return line;
 }

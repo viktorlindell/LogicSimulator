@@ -16,6 +16,7 @@ public:
 
 private:
     void eventHandler();
+    sf::RectangleShape createLine();
 
 public:
 

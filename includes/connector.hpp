@@ -5,6 +5,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <vector>
+
 // Forward declarations:
 class Component;
 
@@ -21,9 +23,12 @@ public:
                                                                                 _offset.y + newPos.y ); };
     inline void setConnection (Connector *c ) { _connection = c; };
 
-    inline Connector * const& getConnection () const { return _connection; }; 
+    inline Connector* const& getConnection () const { return _connection; }; 
     inline sf::Vector2f const& getPosition () const { return _shape.getPosition(); };
     inline Component* const& getParent () const { return _parent; };
+
+private:
+    sf::RectangleShape createLine();
 
 private:
     sf::Vector2i _offset;
