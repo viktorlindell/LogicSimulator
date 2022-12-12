@@ -1,19 +1,18 @@
 
 #include "../includes/game.hpp"
 #include "../includes/collision_control.hpp"
-#include "../includes/event_handler.hpp"
 
 #include <iostream>
 #include <cmath>
 
 Game::Game(sf::RenderWindow *window)
-    : _renderWindow{window}, _components{}
+    : _renderWindow{ window }, _components{}
 {
 }
 
 void Game::run()
 {
-    eventHandler();
+    processEvents();
 
     if( _selectedObject )
     {
@@ -21,7 +20,7 @@ void Game::run()
         if( dynamic_cast<Component*>( _selectedObject ) )
             dynamic_cast<Component*>( _selectedObject )->setPosition( sf::Mouse::getPosition( *_renderWindow ) );
 
-        else if ( !dynamic_cast<Connector*>( _selectedObject )->getConnection() )
+        else if ( dynamic_cast<Connector*>( _selectedObject ) )
             _renderWindow->draw( createLine() );
     }
 
@@ -32,7 +31,7 @@ void Game::run()
     }
 }
 
-void Game::eventHandler()
+void Game::processEvents()
 {
     sf::Event event;
     while( _renderWindow->pollEvent( event ) )
@@ -44,11 +43,9 @@ void Game::eventHandler()
                 _renderWindow->close();
                 break;
 
-            // User pressed the mouse
+            // User pressed mouse button
             case sf::Event::MouseButtonPressed:
-                // Left mousebutton pressed
-                if( event.mouseButton.button == sf::Mouse::Left )
-                    EventHandler::mouseEvent();
+                if( event.mouseButton.button == sf::Mouse::Left ) leftMouseEvent();
                 break;
         
             default:
@@ -57,6 +54,93 @@ void Game::eventHandler()
     }
 }
 
+// Processes a left mouse button event
+void Game::leftMouseEvent()
+{
+    // Check if user pressed on existing component
+    Component *component = CollisionHandler::checkCollisionPoint( _components, sf::Mouse::getPosition( *_renderWindow ) );
+    
+    // Create new component 
+    if( !_selectedObject && !component )
+    {
+        if( createComponent() ) return;
+    }
+
+    // Clicked on nothing but has something selected, do nothing!
+    if ( !component ) return;
+
+    // Clicked on component & has nothing selected.
+    if ( !_selectedObject ) 
+    {
+        _selectedObject = component;
+        // Check if user clicked on connector of said Component.
+        if( CollisionHandler::checkCollisionPoint( component->getConnectors(), sf::Mouse::getPosition( *_renderWindow ) ) )
+            _selectedObject = CollisionHandler::checkCollisionPoint(    component->getConnectors(), 
+                                                                        sf::Mouse::getPosition( *_renderWindow ) );
+        return;
+    }
+
+    // Deselected component
+    if( dynamic_cast<Component*>( _selectedObject ) == component )
+    {
+        _selectedObject = nullptr;
+        return;
+    }
+
+    // Something weird happend
+    if ( !dynamic_cast<Connector*>( _selectedObject ) ) return;
+
+    // Only possibility left is that the user clicked on a connector! 
+    modifyConnection( component );
+}
+
+// Check how to handle to connector: create/destroy connection to another connector or select/deselect a connector
+void Game::modifyConnection( Component *component )
+{
+    Connector *connector = CollisionHandler::checkCollisionPoint( component->getConnectors(), sf::Mouse::getPosition( *_renderWindow ) );   
+    if( !connector ) return;
+    if( connector == static_cast<Connector*>( _selectedObject ) )
+    {
+        _selectedObject = nullptr;
+        return;
+    }
+    
+    for( Component *c : _components)
+    {
+        if( c == dynamic_cast<Component*>( dynamic_cast<Connector*>( _selectedObject )->getParent() ) ) continue;
+
+        if( !static_cast<Connector*>( _selectedObject )->getConnection() )
+        {
+            static_cast<Connector*>( _selectedObject )->setConnection( connector );
+            connector->setConnection( static_cast<Connector*>( _selectedObject ) );
+            _selectedObject = nullptr;
+            break;
+        }
+        else
+        {
+            static_cast<Connector*>( _selectedObject )->setConnection( nullptr );
+            connector->setConnection( nullptr );
+            _selectedObject = nullptr;
+            break;
+        }
+    }
+}
+
+// Creates a new component and returns true if succesful
+bool Game::createComponent()
+{
+    Component *newComponent{ new Component{ sf::Mouse::getPosition( *_renderWindow ) } };
+    if( !CollisionHandler::checkCollisionRectangle( _components, newComponent ) )
+    {
+        _components.push_back( newComponent );
+        return true;
+    }
+
+    delete newComponent;
+    return false;
+}
+
+// Creates a line object between the currently selected component and the mouse!
 sf::RectangleShape Game::createLine()
 {
     sf::Vector2f connectorPosition = dynamic_cast<Connector*>( _selectedObject )->getPosition();

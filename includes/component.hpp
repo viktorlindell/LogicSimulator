@@ -17,9 +17,11 @@ public:
     void update( sf::RenderWindow *renderWindow );
     void render( sf::RenderWindow *renderWindow );
     void setPosition( sf::Vector2i const& newPos );
-
     // Inline functions
     inline std::vector<Connector*> const& getConnectors() const { return _connectors; };
+
+protected:
+    void createConnector( sf::Vector2i const& position );
 
 public:
 

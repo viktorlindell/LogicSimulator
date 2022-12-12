@@ -15,7 +15,13 @@ public:
     void run();
 
 private:
-    void eventHandler();
+    // Event handling
+    void processEvents();
+    void leftMouseEvent();
+
+    // Helper functions
+    void modifyConnection( Component *component );
+    bool createComponent( );
     sf::RectangleShape createLine();
 
 public:
@@ -25,6 +31,7 @@ private:
     sf::RenderWindow *_renderWindow;
     std::vector<Component*> _components;
     Object* _selectedObject { nullptr };
+
 };
 
 #endif
