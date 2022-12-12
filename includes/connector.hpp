@@ -14,7 +14,10 @@ class Connector : public Object
 {
 public:
     Connector(  sf::Vector2i const& pos, sf::Vector2i const& parentPos, Component *parent, 
-                sf::Color const& color = sf::Color(   10, 180, 10   ) );
+                sf::Color const& color = sf::Color( 0x3B3B3BFF ) );
+
+    Connector(const Connector&) = delete;
+    Connector* operator=(const Connector&) = delete;
 
     void update( sf::RenderWindow *renderWindow ) override {};
     void render( sf::RenderWindow *renderWindow ) override;

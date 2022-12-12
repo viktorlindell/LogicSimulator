@@ -48,9 +48,31 @@ void Game::processEvents()
                 if( event.mouseButton.button == sf::Mouse::Left ) leftMouseEvent();
                 break;
         
+            case sf::Event::KeyPressed:
+                keyboardEvent( event );
             default:
                 break;
         }
+    }
+}
+
+void Game::keyboardEvent( sf::Event const& event )
+{
+    if( event.key.code == sf::Keyboard::M )
+    {
+        _componentType++;
+        if( _componentType >= ComponentType::MAX_COMPONENTS )
+            _componentType = 0;
+        
+        std::cout << "Component type: " << _componentType << std::endl;
+    }
+    else if( event.key.code == sf::Keyboard::N )
+    {
+        _componentType--;
+        if( _componentType < 0 )
+            _componentType = ComponentType::MAX_COMPONENTS - 1;
+
+        std::cout << "Component type: " << _componentType << std::endl;
     }
 }
 
@@ -69,7 +91,7 @@ void Game::leftMouseEvent()
     // Clicked on nothing but has something selected, do nothing!
     if ( !component ) return;
 
-    // Clicked on component & has nothing selected.
+    // Select component
     if ( !_selectedObject ) 
     {
         _selectedObject = component;
@@ -129,8 +151,15 @@ void Game::modifyConnection( Component *component )
 // Creates a new component and returns true if succesful
 bool Game::createComponent()
 {
-    Component *newComponent{ new Component{ sf::Mouse::getPosition( *_renderWindow ) } };
-    if( !CollisionHandler::checkCollisionRectangle( _components, newComponent ) )
+    Component *newComponent;
+    if ( _componentType == ComponentType::LIGHT )
+        newComponent = new Light{ sf::Mouse::getPosition( *_renderWindow ) };
+    else if( _componentType == ComponentType::AND )
+        newComponent = new And{ sf::Mouse::getPosition( *_renderWindow ) };
+    else
+        return false;
+    
+    if( !CollisionHandler::checkCollisionRectangle( _components, static_cast<Component*>( newComponent ) ) )
     {
         _components.push_back( newComponent );
         return true;
