@@ -22,7 +22,7 @@ public:
     inline std::vector<Connector*> const& getConnectors() const { return _connectors; };
 
 protected:
-    void createConnector( sf::Vector2i const& position, bool value = false );
+    void createConnector( sf::Vector2i const& position, ConnectorType type, bool value = false );
     void setText( std::string const& text ); 
 
 public:

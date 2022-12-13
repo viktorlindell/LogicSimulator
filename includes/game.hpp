@@ -9,6 +9,24 @@
 
 #include <vector>
 
+// Enum that specifies what mode the user currently resides in.
+enum InteractionMode
+{
+    MOVE,
+    CREATE,
+    MAX_MODES
+};
+
+// Enum that specifies what component the user will place.
+enum ComponentType
+{
+    LIGHT, 
+    AND,
+    GROUND,
+    POSITIVE,
+    MAX_COMPONENTS
+};
+
 class Game
 {
 public:
@@ -37,24 +55,6 @@ private:
     Object* _selectedObject { nullptr };
 
     int _componentType{ 0 };
-
-    // Enum that specifies what mode the user currently resides in.
-    enum InteractionMode
-    {
-        MOVE,
-        CREATE,
-        MAX_MODES
-    };
-
-    // Enum that specifies what component the user will place.
-    enum ComponentType
-    {
-        LIGHT, 
-        AND,
-        GROUND,
-        POSITIVE,
-        MAX_COMPONENTS
-    };
 
 };
 

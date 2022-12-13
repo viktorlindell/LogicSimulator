@@ -3,8 +3,8 @@
 
 #include "cmath"
 
-Connector::Connector(sf::Vector2i const& pos, sf::Vector2i const& parentPos, Component *parent, bool value, sf::Color const& color )
-    : Object{ sf::Vector2f{ 30.f, 20.f }, color }, _offset{ pos }, _parent{ parent }, _value{ value }
+Connector::Connector(sf::Vector2i const& pos, sf::Vector2i const& parentPos, Component *parent, ConnectorType type, bool value, sf::Color const& color )
+    : Object{ sf::Vector2f{ 30.f, 20.f }, color }, _offset{ pos }, _parent{ parent }, _type{ type }, _value{ value }
 {
     _shape.setOrigin( sf::Vector2f{ _shape.getSize().x / 2, _shape.getSize().y / 2 } );
     _shape.setPosition( _offset.x + parentPos.x,

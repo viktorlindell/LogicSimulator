@@ -9,7 +9,7 @@ public:
     Light( sf::Vector2i const& position ) 
         : Component{ position, sf::Color( 0x89A18AFF )}
     {
-        createConnector( sf::Vector2i{ 0, 25 } );
+        createConnector( sf::Vector2i{ 0, 25 }, ConnectorType::INPUT );
         _light.setOrigin( _light.getRadius(), _light.getRadius() );
         _light.setFillColor( sf::Color( 0xFFEC42FF ) );
         _light.setPosition( ( sf::Vector2f )position );
@@ -17,6 +17,7 @@ public:
 
     void update( sf::RenderWindow *renderWindow ) override
     {
+        // Should be done last
         Component::update( renderWindow );
     };
 
@@ -43,15 +44,16 @@ public:
     And( sf::Vector2i const& position ) 
         : Component{ position, sf::Color( 0x38E043FF )}
     {
-        createConnector( sf::Vector2i{ -25 , 25 } );
-        createConnector( sf::Vector2i{ 25 , 25 } );
-        createConnector( sf::Vector2i{ 0 , -25 } );
+        createConnector( sf::Vector2i{ -25 , 25 }, ConnectorType::INPUT);
+        createConnector( sf::Vector2i{ 25 , 25 }, ConnectorType::INPUT );
+        createConnector( sf::Vector2i{ 0 , -25 }, ConnectorType::OUTPUT );
 
         setText( "AND" );
     };
 
     void update( sf::RenderWindow *renderWindow ) override
     {
+        // Should be done last
         Component::update( renderWindow );
     };
 
@@ -65,14 +67,15 @@ public:
     Ground( sf::Vector2i const& position ) 
         : Component{ position, sf::Color( 0x0F0F0FFF )}
     {
-        createConnector( sf::Vector2i{ -25 , 25 } );
-        createConnector( sf::Vector2i{ 25 , 25 } );
+        createConnector( sf::Vector2i{ -25 , 25 }, ConnectorType::OUTPUT );
+        createConnector( sf::Vector2i{ 25 , 25 }, ConnectorType::OUTPUT );
 
         setText( "Ground" );
     };
 
     void update( sf::RenderWindow *renderWindow ) override
     {
+        // Should be done last
         Component::update( renderWindow );
     };
 
@@ -86,14 +89,15 @@ public:
     Positive( sf::Vector2i const& position ) 
         : Component{ position, sf::Color( 0xF00000FF )}
     {
-        createConnector( sf::Vector2i{ -25 , 25 }, true );
-        createConnector( sf::Vector2i{ 25 , 25 }, true );
+        createConnector( sf::Vector2i{ -25 , 25 }, ConnectorType::OUTPUT ,true );
+        createConnector( sf::Vector2i{ 25 , 25 }, ConnectorType::OUTPUT, true );
 
         setText( "5 V" );
     };
 
     void update( sf::RenderWindow *renderWindow ) override
     {
+        // Should be done last
         Component::update( renderWindow );
     };
 

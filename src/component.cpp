@@ -39,9 +39,9 @@ void Component::update( sf::RenderWindow *renderWindow )
     }
 }
 
-void Component::createConnector( sf::Vector2i const& position, bool value )
+void Component::createConnector( sf::Vector2i const& position, ConnectorType type, bool value )
 {
-    _connectors.push_back( new Connector{ position, (sf::Vector2i)_shape.getPosition(), this, value } );
+    _connectors.push_back( new Connector{ position, (sf::Vector2i)_shape.getPosition(), this, type, value } );
 }
 
 void Component::setPosition( sf::Vector2i const& newPos )

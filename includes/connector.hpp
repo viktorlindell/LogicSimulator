@@ -10,10 +10,16 @@
 // Forward declarations:
 class Component;
 
+enum ConnectorType
+{
+    INPUT,
+    OUTPUT
+};
+
 class Connector : public Object
 {
 public:
-    Connector(  sf::Vector2i const& pos, sf::Vector2i const& parentPos, Component *parent, bool value = false, 
+    Connector(  sf::Vector2i const& pos, sf::Vector2i const& parentPos, Component *parent, ConnectorType type, bool value = false, 
                 sf::Color const& color = sf::Color( 0x3B3B3BFF ) );
 
     Connector(const Connector&) = delete;
@@ -37,7 +43,7 @@ private:
     sf::Vector2i _offset;
     Component *_parent;
     Connector *_connection{ nullptr };
-    
+    ConnectorType _type;
     bool _value;
 };
 
