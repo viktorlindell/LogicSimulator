@@ -156,6 +156,10 @@ bool Game::createComponent()
         newComponent = new Light{ sf::Mouse::getPosition( *_renderWindow ) };
     else if( _componentType == ComponentType::AND )
         newComponent = new And{ sf::Mouse::getPosition( *_renderWindow ) };
+    else if( _componentType == ComponentType::GROUND )
+        newComponent = new Ground{ sf::Mouse::getPosition( *_renderWindow ) };
+    else if( _componentType == ComponentType::POSITIVE )
+        newComponent = new Positive{ sf::Mouse::getPosition( *_renderWindow ) };
     else
         return false;
     

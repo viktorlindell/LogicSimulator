@@ -38,6 +38,7 @@ private:
 
     int _componentType{ 0 };
 
+    // Enum that specifies what mode the user currently resides in.
     enum InteractionMode
     {
         MOVE,
@@ -45,10 +46,13 @@ private:
         MAX_MODES
     };
 
+    // Enum that specifies what component the user will place.
     enum ComponentType
     {
         LIGHT, 
         AND,
+        GROUND,
+        POSITIVE,
         MAX_COMPONENTS
     };
 
