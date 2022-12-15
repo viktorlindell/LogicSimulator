@@ -8,13 +8,13 @@ class Light : public Component
 {
 public:
     Light( sf::Vector2i const& position ) 
-        : Component{ position, sf::Color( 0x89A18AFF )}
+        : Component{ position, sf::Color( 0x38E043FF )}
     {
         createConnector( sf::Vector2i{ 0, 25 }, ConnectorType::INPUT );
 
-        _light.setOrigin( _light.getRadius(), _light.getRadius() );
-        _light.setFillColor( sf::Color( 0xB5B5B5FF ) );
+        _light.setOrigin( _light.getSize().x / 2, _light.getSize().y / 2 );
         _light.setPosition( ( sf::Vector2f )position );
+        _light.setFillColor( sf::Color( 0xB5B5B5FF ) );
     };
 
     void update( sf::RenderWindow *renderWindow ) override
@@ -45,7 +45,7 @@ public:
     }
 
 private:
-    sf::CircleShape _light{ 20.f };
+    sf::RectangleShape _light{ sf::Vector2f( 60.f, 30.f ) };
 
 };
 

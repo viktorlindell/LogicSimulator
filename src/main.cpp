@@ -10,7 +10,7 @@ int main()
 
     while ( renderWindow.isOpen() )
     {
-        renderWindow.clear( sf::Color( 0x474747FF ) );
+        renderWindow.clear( sf::Color( 0x5D96A6FF ) );
         game.run();
         renderWindow.display();
     }
