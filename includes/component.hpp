@@ -18,7 +18,7 @@ public:
     virtual void update( sf::RenderWindow *renderWindow );
     virtual void render( sf::RenderWindow *renderWindow );
     virtual void setPosition( sf::Vector2i const& newPos );
-    // Inline functions
+
     inline std::vector<Connector*> const& getConnectors() const { return _connectors; };
 
 protected:
@@ -29,10 +29,11 @@ public:
 
 protected:
     std::vector<Connector*> _connectors{};
+    std::vector<Connector*> _inputConnectors{};
+    std::vector<Connector*> _outputConnectors{};
+    
     sf::Font font{};
-    sf::Text _text{}; 
-    bool value{ false };
-
+    sf::Text _text{};
 };
 
 #endif

@@ -22,6 +22,7 @@ enum ComponentType
 {
     LIGHT, 
     AND,
+    OR,
     GROUND,
     POSITIVE,
     MAX_COMPONENTS

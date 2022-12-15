@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <iostream>
+
 class Object
 {
 protected:
@@ -18,10 +20,13 @@ public:
 
     inline void setColor( sf::Color color ) { _shape.setFillColor( color ); };
     inline sf::RectangleShape const& getShape() const { return _shape; };
+    inline bool getValue() const { return _value; };
     
 protected:
     sf::RectangleShape _shape;
     sf::Color _color;
+
+    bool _value{ false };
 };
 
 #endif

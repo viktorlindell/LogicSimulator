@@ -138,9 +138,12 @@ void Game::modifyConnection( Component *component )
             _selectedObject = nullptr;
             break;
         }
+        // Remove connection between components.
         else
         {
+            static_cast<Connector*>( _selectedObject )->setValue( false );
             static_cast<Connector*>( _selectedObject )->setConnection( nullptr );
+            connector->setValue( false );
             connector->setConnection( nullptr );
             _selectedObject = nullptr;
             break;
@@ -152,14 +155,17 @@ void Game::modifyConnection( Component *component )
 bool Game::createComponent()
 {
     Component *newComponent;
+    sf::Vector2i position = sf::Mouse::getPosition( *_renderWindow );
     if ( _componentType == ComponentType::LIGHT )
-        newComponent = new Light{ sf::Mouse::getPosition( *_renderWindow ) };
+        newComponent = new Light{ position };
     else if( _componentType == ComponentType::AND )
-        newComponent = new And{ sf::Mouse::getPosition( *_renderWindow ) };
+        newComponent = new And{ position };
+    else if( _componentType == ComponentType::OR )
+        newComponent = new Or{ position };
     else if( _componentType == ComponentType::GROUND )
-        newComponent = new Ground{ sf::Mouse::getPosition( *_renderWindow ) };
+        newComponent = new Ground{ position };
     else if( _componentType == ComponentType::POSITIVE )
-        newComponent = new Positive{ sf::Mouse::getPosition( *_renderWindow ) };
+        newComponent = new Positive{ position };
     else
         return false;
     

@@ -11,6 +11,9 @@ NC="\033[0m"
 
 all: logicsimulator
 
+make run: logicsimulator
+	./logicsimulator
+
 connector.o: $(SRC)connector.cpp
 		@echo $(GREEN) "** Building the connector class **" $(NC)
 		$(CXX) $(CPPFLAGS) -c "$(SRC)connector.cpp" -o $(OBJ)connector.o

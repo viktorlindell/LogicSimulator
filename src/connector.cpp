@@ -3,13 +3,26 @@
 
 #include "cmath"
 
-Connector::Connector(sf::Vector2i const& pos, sf::Vector2i const& parentPos, Component *parent, ConnectorType type, bool value, sf::Color const& color )
-    : Object{ sf::Vector2f{ 30.f, 20.f }, color }, _offset{ pos }, _parent{ parent }, _type{ type }, _value{ value }
+Connector::Connector(sf::Vector2i const& pos, sf::Vector2i const& parentPos, Object *parent, ConnectorType type, sf::Color const& color )
+    : Object{ sf::Vector2f{ 30.f, 20.f }, color }, _offset{ pos }, _parent{ parent }, _type{ type }
 {
     _shape.setOrigin( sf::Vector2f{ _shape.getSize().x / 2, _shape.getSize().y / 2 } );
     _shape.setPosition( _offset.x + parentPos.x,
                         _offset.y + parentPos.y );
     _shape.setFillColor( _color );
+}
+
+void Connector::update( sf::RenderWindow *renderWindow )
+{
+    // Only update your own value if you are of type OUTPUT.
+    if( _type == INPUT )
+        return;
+
+    _value = _parent->getValue();
+
+    // Update the value of your connection.
+    if( _connection )
+        _connection->setValue( _value );
 }
 
 void Connector::render( sf::RenderWindow *renderWindow )
@@ -21,6 +34,9 @@ void Connector::render( sf::RenderWindow *renderWindow )
     _shape.setFillColor( _color );
 }
 
+// TODO: Currently both sides of the connection draws a line, fix so it only draws one line.
+
+// Helper fundtion that creates a Rectangle representing a line.
 sf::RectangleShape Connector::createLine()
 {
     sf::Vector2f connectorPosition = _shape.getPosition();
