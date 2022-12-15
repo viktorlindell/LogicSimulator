@@ -32,7 +32,7 @@ protected:
     std::vector<Connector*> _inputConnectors{};
     std::vector<Connector*> _outputConnectors{};
     
-    sf::Font font{};
+    sf::Font _font{};
     sf::Text _text{};
 };
 

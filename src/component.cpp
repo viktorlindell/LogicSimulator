@@ -11,8 +11,8 @@ Component::Component( sf::Vector2i const& pos, sf::Color const& color )
     _shape.setPosition( pos.x, pos.y );
     _shape.setOrigin( _shape.getSize().x / 2, _shape.getSize().y / 2 );
 
-    if ( font.loadFromFile( "Roboto-Regular.ttf" ) ) // Why cant I read fonts from "../resources/Roboto-Regular.ttf"
-        _text.setFont( font );
+    if ( _font.loadFromFile( "Roboto-Bold.ttf" ) ) // Why cant I read fonts from "../resources/Roboto-Regular.ttf"
+        _text.setFont( _font );
 
     _text.setString( "" );
     _text.setCharacterSize( 24 );

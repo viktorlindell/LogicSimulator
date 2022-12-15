@@ -8,6 +8,16 @@
 Game::Game(sf::RenderWindow *window)
     : _renderWindow{ window }, _components{}
 {
+    if ( _font.loadFromFile( "Roboto-Bold.ttf" ) ) // Why cant I read fonts from "../resources/Roboto-Regular.ttf"
+        _text.setFont( _font );
+
+    _text.setString( "" );
+    _text.setCharacterSize( 32 );
+    _text.setFillColor( sf::Color( 0xFFFFFFFF ) );
+    _text.setPosition( sf::Vector2f( 20.f, 20.f ) );
+    _textBox.setFillColor( sf::Color( 0x00000044 ) );
+    _textBox.setPosition( sf::Vector2f( 12.f, 20.f ) );
+    setText();
 }
 
 void Game::run()
@@ -29,6 +39,9 @@ void Game::run()
         c->update( _renderWindow );
         c->render( _renderWindow );
     }
+
+    _renderWindow->draw( _textBox );
+    _renderWindow->draw( _text );
 }
 
 void Game::processEvents()
@@ -63,17 +76,15 @@ void Game::keyboardEvent( sf::Event const& event )
         _componentType++;
         if( _componentType >= ComponentType::MAX_COMPONENTS )
             _componentType = 0;
-        
-        std::cout << "Component type: " << _componentType << std::endl;
     }
     else if( event.key.code == sf::Keyboard::N )
     {
         _componentType--;
         if( _componentType < 0 )
             _componentType = ComponentType::MAX_COMPONENTS - 1;
-
-        std::cout << "Component type: " << _componentType << std::endl;
     }
+
+    setText();
 }
 
 // Processes a left mouse button event
@@ -168,7 +179,7 @@ bool Game::createComponent()
         newComponent = new Positive{ position };
     else
         return false;
-    
+
     if( !CollisionHandler::checkCollisionRectangle( _components, static_cast<Component*>( newComponent ) ) )
     {
         _components.push_back( newComponent );
@@ -195,4 +206,30 @@ sf::RectangleShape Game::createLine()
     line.setPosition( connectorPosition );
     
     return line;
+}
+
+void Game::setText()
+{
+    switch (_componentType)
+    {
+    case LIGHT:
+        _text.setString( "Current component: LIGHT" );
+        break;
+    case AND:
+        _text.setString( "Current component: AND" );
+        break;
+    case OR:
+        _text.setString( "Current component: OR" );
+        break;
+    case GROUND:
+        _text.setString( "Current component: GROUND" );
+        break;
+    case POSITIVE:
+        _text.setString( "Current component: POSITIVE" );
+        break;
+    default:
+        break;
+    }
+
+    _textBox.setSize( sf::Vector2f( _text.getGlobalBounds().width + 16.f, _text.getGlobalBounds().height + 12.f ) );
 }

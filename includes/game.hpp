@@ -46,6 +46,7 @@ private:
     void modifyConnection( Component *component );
     bool createComponent( );
     sf::RectangleShape createLine();
+    void setText();
 
 public:
 
@@ -57,6 +58,10 @@ private:
 
     int _componentType{ 0 };
 
+    sf::Text _text{};
+    sf::Font _font{};
+
+    sf::RectangleShape _textBox{ };
 };
 
 #endif
