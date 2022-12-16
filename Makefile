@@ -22,6 +22,14 @@ component.o: $(SRC)component.cpp
 		@echo $(GREEN) "** Building the component class **" $(NC)
 		$(CXX) $(CPPFLAGS) -c "$(SRC)component.cpp" -o $(OBJ)component.o
 
+event_manager.o: $(SRC)event_manager.cpp
+		@echo $(GREEN) "** Building the event_manager class **" $(NC)
+		$(CXX) $(CPPFLAGS) -c "$(SRC)event_manager.cpp" -o $(OBJ)event_manager.o
+
+object_manager.o: $(SRC)object_manager.cpp
+		@echo $(GREEN) "** Building the object_manager class **" $(NC)
+		$(CXX) $(CPPFLAGS) -c "$(SRC)object_manager.cpp" -o $(OBJ)object_manager.o
+
 game.o: $(SRC)game.cpp
 		@echo $(GREEN) "** Building the game class **" $(NC)
 		$(CXX) $(CPPFLAGS) -c "$(SRC)game.cpp" -o $(OBJ)game.o
@@ -29,10 +37,10 @@ game.o: $(SRC)game.cpp
 main.o: $(SRC)main.cpp
 		$(CXX) $(CPPFLAGS) -c "$(SRC)main.cpp" -o $(OBJ)main.o
 
-logicsimulator: connector.o component.o game.o main.o
+logicsimulator: connector.o component.o event_manager.o object_manager.o game.o main.o
 		@echo $(GREEN) "** Building the game **" $(NC)
 		$(CXX) $(CPPFLAGS) -o logicsimulator \
-			$(OBJ)connector.o $(OBJ)component.o $(OBJ)game.o $(OBJ)main.o \
+			$(OBJ)connector.o $(OBJ)component.o $(OBJ)event_manager.o $(OBJ)object_manager.o $(OBJ)game.o $(OBJ)main.o \
 			$(LIBS)
 
 clean:

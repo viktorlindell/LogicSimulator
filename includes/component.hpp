@@ -9,13 +9,25 @@
 #include <iostream>
 #include <vector>
 
+// Enum that specifies what component the user will place.
+enum ComponentType : uint32_t
+{
+    LIGHT, 
+    AND,
+    OR,
+    XOR,
+    GROUND,
+    POSITIVE,
+    MAX_COMPONENTS
+};
+
 /// @brief Generic component class, creates a sprite at the provided location.
 class Component : public Object
 {
 public:
     Component( sf::Vector2i const& pos, sf::Color const& color = sf::Color( 180, 180, 180 ) );
 
-    virtual void update( sf::RenderWindow *renderWindow );
+    virtual void update( sf::RenderWindow *renderWindow = nullptr );
     virtual void render( sf::RenderWindow *renderWindow );
     virtual void setPosition( sf::Vector2i const& newPos );
 

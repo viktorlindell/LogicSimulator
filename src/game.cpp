@@ -1,14 +1,12 @@
 
 #include "../includes/game.hpp"
-#include "../includes/collision_control.hpp"
 
 #include <iostream>
-#include <cmath>
 
 Game::Game(sf::RenderWindow *window)
-    : _renderWindow{ window }, _components{}
+    : _renderWindow{ window }, _eventManager{}, _objectManager{}
 {
-    if ( _font.loadFromFile( "Roboto-Bold.ttf" ) ) // Why cant I read fonts from "../resources/Roboto-Regular.ttf"
+/*     if ( _font.loadFromFile( "Roboto-Bold.ttf" ) ) // Why cant I read fonts from "../resources/Roboto-Regular.ttf"
         _text.setFont( _font );
 
     _text.setString( "" );
@@ -16,78 +14,25 @@ Game::Game(sf::RenderWindow *window)
     _text.setFillColor( sf::Color( 0xFFFFFFFF ) );
     _text.setPosition( sf::Vector2f( 20.f, 20.f ) );
     _textBox.setFillColor( sf::Color( 0x00000044 ) );
-    _textBox.setPosition( sf::Vector2f( 12.f, 20.f ) );
-    setText();
+    _textBox.setPosition( sf::Vector2f( 12.f, 20.f ) ); */
+    //setText();
+
+    _eventManager.Init( _renderWindow, &_objectManager );
 }
 
 void Game::run()
 {
-    processEvents();
+    // Process events
+    _eventManager.listen();
 
-    if( _selectedObject )
-    {
-        _selectedObject->setColor( sf::Color( 0xFF0000FF ) );
-        if( dynamic_cast<Component*>( _selectedObject ) )
-            dynamic_cast<Component*>( _selectedObject )->setPosition( sf::Mouse::getPosition( *_renderWindow ) );
+    // Update everything
+    _objectManager.update();
 
-        else if ( dynamic_cast<Connector*>( _selectedObject ) )
-            _renderWindow->draw( createLine() );
-    }
-
-    for( Object *c : _components )
-    {   
-        c->update( _renderWindow );
-        c->render( _renderWindow );
-    }
-
-    _renderWindow->draw( _textBox );
-    _renderWindow->draw( _text );
+    // Render everything
+    _objectManager.render( _renderWindow );
 }
 
-void Game::processEvents()
-{
-    sf::Event event;
-    while( _renderWindow->pollEvent( event ) )
-    {
-        switch ( event.type )
-        {
-            // User pressed close button
-            case sf::Event::Closed:
-                _renderWindow->close();
-                break;
-
-            // User pressed mouse button
-            case sf::Event::MouseButtonPressed:
-                if( event.mouseButton.button == sf::Mouse::Left ) leftMouseEvent();
-                break;
-        
-            case sf::Event::KeyPressed:
-                keyboardEvent( event );
-            default:
-                break;
-        }
-    }
-}
-
-void Game::keyboardEvent( sf::Event const& event )
-{
-    if( event.key.code == sf::Keyboard::M )
-    {
-        _componentType++;
-        if( _componentType >= ComponentType::MAX_COMPONENTS )
-            _componentType = 0;
-    }
-    else if( event.key.code == sf::Keyboard::N )
-    {
-        _componentType--;
-        if( _componentType < 0 )
-            _componentType = ComponentType::MAX_COMPONENTS - 1;
-    }
-
-    setText();
-}
-
-// Processes a left mouse button event
+/* // Processes a left mouse button event
 void Game::leftMouseEvent()
 {
     // Check if user pressed on existing component
@@ -126,8 +71,8 @@ void Game::leftMouseEvent()
     // Only possibility left is that the user clicked on a connector! 
     modifyConnection( component );
 }
-
-// Check how to handle to connector: create/destroy connection to another connector or select/deselect a connector
+ */
+/* // Check how to handle to connector: create/destroy connection to another connector or select/deselect a connector
 void Game::modifyConnection( Component *component )
 {
     Connector *connector = CollisionHandler::checkCollisionPoint( component->getConnectors(), sf::Mouse::getPosition( *_renderWindow ) );   
@@ -161,8 +106,8 @@ void Game::modifyConnection( Component *component )
         }
     }
 }
-
-// Creates a new component and returns true if succesful
+ */
+/* // Creates a new component and returns true if succesful
 bool Game::createComponent()
 {
     Component *newComponent;
@@ -191,8 +136,8 @@ bool Game::createComponent()
     delete newComponent;
     return false;
 }
-
-// Creates a line object between the currently selected component and the mouse!
+ */
+/* // Creates a line object between the currently selected component and the mouse!
 sf::RectangleShape Game::createLine()
 {
     sf::Vector2f connectorPosition = dynamic_cast<Connector*>( _selectedObject )->getPosition();
@@ -209,7 +154,8 @@ sf::RectangleShape Game::createLine()
     
     return line;
 }
-
+ */
+/* 
 void Game::setText()
 {
     switch (_componentType)
@@ -237,4 +183,4 @@ void Game::setText()
     }
 
     _textBox.setSize( sf::Vector2f( _text.getGlobalBounds().width + 16.f, _text.getGlobalBounds().height + 12.f ) );
-}
+} */

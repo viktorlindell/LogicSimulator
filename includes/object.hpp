@@ -15,7 +15,7 @@ protected:
     virtual ~Object() {};
 
 public:
-    virtual void update( sf::RenderWindow *renderWindow ) = 0;
+    virtual void update( sf::RenderWindow *renderWindow = nullptr ) = 0;
     virtual void render( sf::RenderWindow *renderWindow ) = 0;
 
     inline void setColor( sf::Color color ) { _shape.setFillColor( color ); };
