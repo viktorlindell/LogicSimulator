@@ -23,10 +23,18 @@ enum ComponentType
     LIGHT, 
     AND,
     OR,
+    XOR,
     GROUND,
     POSITIVE,
     MAX_COMPONENTS
 };
+
+/* namespace COLORS
+{
+    uint32_t _grey = 0x404040FF;
+    uint32_t _green = 0x5DB53FFF;
+    uint32_t _red = 0xBD2121FF;
+}; */
 
 class Game
 {

@@ -173,6 +173,8 @@ bool Game::createComponent()
         newComponent = new And{ position };
     else if( _componentType == ComponentType::OR )
         newComponent = new Or{ position };
+    else if( _componentType == ComponentType::XOR )
+        newComponent = new Xor{ position };
     else if( _componentType == ComponentType::GROUND )
         newComponent = new Ground{ position };
     else if( _componentType == ComponentType::POSITIVE )
@@ -220,6 +222,9 @@ void Game::setText()
         break;
     case OR:
         _text.setString( "Current component: OR" );
+        break;
+    case XOR:
+        _text.setString( "Current component: XOR" );
         break;
     case GROUND:
         _text.setString( "Current component: GROUND" );
