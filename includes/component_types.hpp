@@ -124,7 +124,7 @@ public:
     {
         // Should be done last
         _value = false;
-        if( _inputConnectors.front() != _inputConnectors.back() )
+        if( _inputConnectors.front()->getValue() != _inputConnectors.back()->getValue() )
             _value = true;
         
         Component::update( renderWindow );
