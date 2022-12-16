@@ -9,6 +9,8 @@
 #include "component_types.hpp"
 #include "connector.hpp"
 
+#include <cmath>
+
 class ObjectManager
 {
 public:
@@ -26,6 +28,9 @@ public:
 
     inline Object* const& getSelectedGameObject() const { return _selectedObject; };
     inline void setSelectedGameObject( Object *object ) { _selectedObject = object; };
+
+private:
+    sf::RectangleShape createLine( sf::Vector2i const& position );
 
 private:
     std::vector<Component*> _gameObjects{};

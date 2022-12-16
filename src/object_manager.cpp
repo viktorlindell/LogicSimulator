@@ -16,9 +16,10 @@ void ObjectManager::render( sf::RenderWindow *renderWindow )
         _selectedObject->setColor( sf::Color( 0xFF0000FF ) );
         if( dynamic_cast<Component*>( _selectedObject ) )
             dynamic_cast<Component*>( _selectedObject )->setPosition( sf::Mouse::getPosition( *renderWindow ) );
+
+        if( dynamic_cast<Connector*>( _selectedObject ) )
+            renderWindow->draw( createLine( sf::Mouse::getPosition( *renderWindow ) ) );
     }
-
-
 
     // Render all game objects.
     for( Object *c : _gameObjects )
@@ -56,4 +57,22 @@ bool ObjectManager::createGameObject( sf::Vector2i position, uint32_t type )
 void ObjectManager::deleteGameObject()
 {
     
+}
+
+sf::RectangleShape ObjectManager::createLine( sf::Vector2i const& position )
+{
+    sf::Vector2f connectorPosition = dynamic_cast<Connector*>( _selectedObject )->getPosition();
+    sf::Vector2f mousePosition = (sf::Vector2f)position;
+
+    float lineLength = sqrt( pow( ( connectorPosition.x - mousePosition.x ), 2 ) + pow( ( connectorPosition.y - mousePosition.y ), 2 ) );
+
+    sf::RectangleShape line{ sf::Vector2f{ lineLength, 5 } };
+
+    float angle = 180 + atan2( connectorPosition.y  - mousePosition.y, connectorPosition.x - mousePosition.x ) * 180 / M_PI ;
+
+    line.rotate( angle );
+    line.setPosition( connectorPosition );
+    line.setFillColor( sf::Color( 0x737373FF ) );
+    
+    return line;
 }

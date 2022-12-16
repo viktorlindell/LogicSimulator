@@ -7,6 +7,7 @@
 
 #include "object_manager.hpp"
 #include "event_manager.hpp"
+#include "interface_manager.hpp"
 
 /* namespace COLORS
 {
@@ -21,23 +22,15 @@ public:
     Game(sf::RenderWindow *window);
     Game(const Game&) = delete;
     Game* operator=(const Game&) = delete;
+    
     void run();
-
-private:
-
-public:
-
 
 private:
     sf::RenderWindow *_renderWindow;
 
-    EventManager _eventManager;
-    ObjectManager _objectManager;
-
-/*     sf::Text _text{};
-    sf::Font _font{};
-
-    sf::RectangleShape _textBox{ }; */
+    EventManager _eventManager{};
+    ObjectManager _objectManager{};
+    InterfaceManager _interfaceManager{};
 };
 
 #endif
