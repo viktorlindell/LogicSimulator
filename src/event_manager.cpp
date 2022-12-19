@@ -103,24 +103,21 @@ void EventManager::modifyConnection( Component *component )
     
     for( Component *c : _objectManager->getGameObjects() )
     {
-        if( c == dynamic_cast<Component*>( dynamic_cast<Connector*>( _objectManager->getSelectedGameObject() )->getParent() ) ) continue;
+        Connector *selectedConnector = static_cast<Connector*>( _objectManager->getSelectedGameObject() );
+
+        if( c == dynamic_cast<Component*>( selectedConnector->getParent() ) ) continue;
 
         // Create connection between components.
-        if( !static_cast<Connector*>( _objectManager->getSelectedGameObject() )->getConnection() )
+        if( !_objectManager->isConnected( selectedConnector ) )
         {
-            static_cast<Connector*>( _objectManager->getSelectedGameObject() )->setConnection( connector );
-            connector->setConnection( static_cast<Connector*>( _objectManager->getSelectedGameObject() ) );
+            _objectManager->createConnection( connector );
             _objectManager->setSelectedGameObject( nullptr );
             break;
         }
-
         // Remove connection between components.
         else
         {
-            static_cast<Connector*>( _objectManager->getSelectedGameObject() )->setValue( false );
-            static_cast<Connector*>( _objectManager->getSelectedGameObject() )->setConnection( nullptr );
-            connector->setValue( false );
-            connector->setConnection( nullptr );
+            _objectManager->deleteConnection( connector );
             _objectManager->setSelectedGameObject( nullptr );
             break;
         }

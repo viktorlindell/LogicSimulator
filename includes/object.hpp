@@ -15,13 +15,15 @@ protected:
     virtual ~Object() {};
 
 public:
-    virtual void update( sf::RenderWindow *renderWindow = nullptr ) = 0;
+    virtual void update( ) = 0;
     virtual void render( sf::RenderWindow *renderWindow ) = 0;
 
+    virtual void setPosition( sf::Vector2i const& ) = 0;
+
     inline void setColor( sf::Color color ) { _shape.setFillColor( color ); };
-    inline sf::RectangleShape const& getShape() const { return _shape; };
     inline bool getValue() const { return _value; };
-    
+    inline sf::RectangleShape const& getShape() const { return _shape; };
+
 protected:
     sf::RectangleShape _shape;
     sf::Color _color;

@@ -7,6 +7,11 @@ void ObjectManager::update()
     {   
         c->update();
     }
+
+    for ( auto const& connection : _connections )
+    {
+        connection.first->setValue( connection.second->getValue() );
+    } 
 }
 
 void ObjectManager::render( sf::RenderWindow *renderWindow )
@@ -20,6 +25,12 @@ void ObjectManager::render( sf::RenderWindow *renderWindow )
         if( dynamic_cast<Connector*>( _selectedObject ) )
             renderWindow->draw( createLine( sf::Mouse::getPosition( *renderWindow ) ) );
     }
+
+    // Render all connections between objects.
+    for ( auto const& connection : _connections )
+    {
+        renderWindow->draw( createLine( connection.first->getPosition(), connection.second->getPosition() ) );
+    } 
 
     // Render all game objects.
     for( Object *c : _gameObjects )
@@ -59,6 +70,57 @@ void ObjectManager::deleteGameObject()
     
 }
 
+void ObjectManager::createConnection( Connector *connector )
+{
+    Connector *selectedConnector = static_cast<Connector*>( _selectedObject );
+    if( selectedConnector->getType() == ConnectorType::INPUT )
+    {
+        if( _connections.find(selectedConnector) != _connections.end() )
+            return;
+        
+        _connections[selectedConnector] = connector;
+    }
+    else if ( connector->getType() == ConnectorType::INPUT )
+    {
+        if( _connections.find(connector) != _connections.end() )
+            return;
+        
+        _connections[connector] = selectedConnector;
+    }
+
+    std::cout << "Created a new connection. New size is: " << _connections.size() << std::endl;
+}
+
+void ObjectManager::deleteConnection( Connector *connector )
+{
+    Connector *selectedConnector = static_cast<Connector*>( _selectedObject );
+    if( selectedConnector->getType() == ConnectorType::INPUT )
+    {
+        _connections.erase( selectedConnector );
+    }
+    else if ( connector->getType() == ConnectorType::INPUT )
+    {
+        _connections.erase( connector );
+    }
+
+    selectedConnector->setValue( false );
+    connector->setValue( false );
+    
+    std::cout << "Deleted a connection. New size is: " << _connections.size() << std::endl;
+}
+
+bool ObjectManager::isConnected( Connector *connector )
+{
+    // No limit on number of connections
+    if( connector->getType() == ConnectorType::OUTPUT )
+        return false;
+
+    if( _connections.find( connector ) == _connections.end() )
+        return false;
+
+    return true;
+}
+
 sf::RectangleShape ObjectManager::createLine( sf::Vector2i const& position )
 {
     sf::Vector2f connectorPosition = dynamic_cast<Connector*>( _selectedObject )->getPosition();
@@ -76,3 +138,19 @@ sf::RectangleShape ObjectManager::createLine( sf::Vector2i const& position )
     
     return line;
 }
+
+sf::RectangleShape ObjectManager::createLine( sf::Vector2f const& position1, sf::Vector2f const& position2 )
+{
+    float lineLength = sqrt( pow( ( position1.x - position2.x ), 2 ) + pow( ( position1.y - position2.y ), 2 ) );
+
+    sf::RectangleShape line{ sf::Vector2f{ lineLength, 5 } };
+
+    float angle = 180 + atan2( position1.y  - position2.y, position1.x - position2.x ) * 180 / M_PI ;
+
+    line.rotate( angle );
+    line.setPosition( position1 );
+    line.setFillColor( sf::Color( 0x737373FF ) );
+    
+    return line;
+}
+

@@ -8,7 +8,7 @@ class Light : public Component
 {
 public:
     Light( sf::Vector2i const& position ) 
-        : Component{ position, sf::Color( 0x5DB53FFF )}
+        : Component{ position }
     {
         createConnector( sf::Vector2i{ 0, 25 }, ConnectorType::INPUT );
 
@@ -17,14 +17,14 @@ public:
         _light.setFillColor( sf::Color( 0xB5B5B5FF ) );
     };
 
-    void update( sf::RenderWindow *renderWindow ) override
+    void update( ) override
     {
         _value = false;
-        if( _inputConnectors.front()->getValue() )
+        if( getIConnectors().front()->getValue() )
             _value = true;
 
         // Should be done last
-        Component::update( renderWindow );
+        Component::update( );
     };
 
     void render( sf::RenderWindow *renderWindow ) override
@@ -53,7 +53,7 @@ class And : public Component
 {
 public:
     And( sf::Vector2i const& position ) 
-        : Component{ position, sf::Color( 0x5DB53FFF )}
+        : Component{ position }
     {
         createConnector( sf::Vector2i{ -25 , 25 }, ConnectorType::INPUT);
         createConnector( sf::Vector2i{ 25 , 25 }, ConnectorType::INPUT );
@@ -62,16 +62,16 @@ public:
         setText( "AND" );
     };
 
-    void update( sf::RenderWindow *renderWindow ) override
+    void update( ) override
     {
         // Should be done last
         _value = true;
 
-        for( Connector* inputConnector: _inputConnectors )
+        for( Connector* inputConnector: getIConnectors() )
             if ( !inputConnector->getValue() )
                 _value = false;
         
-        Component::update( renderWindow );
+        Component::update( );
     };
 
 private:
@@ -82,7 +82,7 @@ class Or : public Component
 {
 public:
     Or( sf::Vector2i const& position ) 
-        : Component{ position, sf::Color( 0x5DB53FFF )}
+        : Component{ position }
     {
         createConnector( sf::Vector2i{ -25 , 25 }, ConnectorType::INPUT);
         createConnector( sf::Vector2i{ 25 , 25 }, ConnectorType::INPUT );
@@ -91,16 +91,16 @@ public:
         setText( "OR" );
     };
 
-    void update( sf::RenderWindow *renderWindow ) override
+    void update( ) override
     {
         // Should be done last
         _value = false;
 
-        for( Connector* inputConnector: _inputConnectors )
+        for( Connector* inputConnector: getIConnectors() )
             if ( inputConnector->getValue() )
                 _value = true;
         
-        Component::update( renderWindow );
+        Component::update( );
     };
 
 private:
@@ -111,7 +111,7 @@ class Xor : public Component
 {
 public:
     Xor( sf::Vector2i const& position ) 
-        : Component{ position, sf::Color( 0x5DB53FFF )}
+        : Component{ position }
     {
         createConnector( sf::Vector2i{ -25 , 25 }, ConnectorType::INPUT);
         createConnector( sf::Vector2i{ 25 , 25 }, ConnectorType::INPUT );
@@ -120,14 +120,14 @@ public:
         setText( "XOR" );
     };
 
-    void update( sf::RenderWindow *renderWindow ) override
+    void update( ) override
     {
         // Should be done last
         _value = false;
-        if( _inputConnectors.front()->getValue() != _inputConnectors.back()->getValue() )
+        if( getIConnectors().front()->getValue() != getIConnectors().back()->getValue() )
             _value = true;
         
-        Component::update( renderWindow );
+        Component::update( );
     };
 
 private:
@@ -138,7 +138,7 @@ class Ground : public Component
 {
 public:
     Ground( sf::Vector2i const& position ) 
-        : Component{ position, sf::Color( 0x0F0F0FFF )}
+        : Component{ position }
     {
         createConnector( sf::Vector2i{ -25 , -25 }, ConnectorType::OUTPUT, false );
         createConnector( sf::Vector2i{ 25 , -25 }, ConnectorType::OUTPUT, false );
@@ -146,12 +146,12 @@ public:
         setText( "Ground" );
     };
 
-    void update( sf::RenderWindow *renderWindow ) override
+    void update( ) override
     {
         // Should be done last
         _value = false;
 
-        Component::update( renderWindow );
+        Component::update( );
     };
 
 private:
@@ -162,7 +162,7 @@ class Positive : public Component
 {
 public:
     Positive( sf::Vector2i const& position ) 
-        : Component{ position, sf::Color( 0xF00000FF )}
+        : Component{ position }
     {
         createConnector( sf::Vector2i{ -25 , -25 }, ConnectorType::OUTPUT, true );
         createConnector( sf::Vector2i{ 25 , -25 }, ConnectorType::OUTPUT, true );   
@@ -170,12 +170,12 @@ public:
         setText( "5 V" );
     };
 
-    void update( sf::RenderWindow *renderWindow ) override
+    void update( ) override
     {
         _value = true;
 
         // Should be done last
-        Component::update( renderWindow );
+        Component::update( );
     };
 
 private:

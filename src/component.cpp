@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-Component::Component( sf::Vector2i const& pos, sf::Color const& color )
-    : Object{ sf::Vector2f{ 120.f, 70.f }, color }
+Component::Component( sf::Vector2i const& pos )
+    : Object{ sf::Vector2f{ 120.f, 70.f }, sf::Color( 0x5DB53FFF ) }
 {
     _shape.setFillColor( _color );
     _shape.setPosition( pos.x, pos.y );
@@ -31,26 +31,24 @@ void Component::render( sf::RenderWindow  *renderWindow )
     }
 }
 
-void Component::update( sf::RenderWindow *renderWindow )
+void Component::update( )
 {
-    //std::cout << _value << std::endl;
     for (Connector *c : _connectors )
     {
-        c->update( renderWindow );
-        //std::cout << "Connnector value: " << c->getValue() << std::endl;
+        c->update( );
     }
 }
 
-void Component::createConnector( sf::Vector2i const& position, ConnectorType type, bool value )
+void Component::createConnector( sf::Vector2i const& position, ConnectorType type, bool initValue )
 {
     Connector *newConnector = new Connector{ position, (sf::Vector2i)_shape.getPosition(), this, type };
-    newConnector->setValue( value );
+    newConnector->setValue( initValue );
     _connectors.push_back( newConnector );
     
     if( type == INPUT )
-        _inputConnectors.push_back( newConnector );
+        _iConnectors.push_back( newConnector );
     else if ( type == OUTPUT )
-        _outputConnectors.push_back( newConnector );
+        _oConnectors.push_back( newConnector );
 }
 
 void Component::setPosition( sf::Vector2i const& newPos )

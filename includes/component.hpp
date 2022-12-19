@@ -21,31 +21,30 @@ enum ComponentType : uint32_t
     MAX_COMPONENTS
 };
 
-/// @brief Generic component class, creates a sprite at the provided location.
 class Component : public Object
 {
 public:
-    Component( sf::Vector2i const& pos, sf::Color const& color = sf::Color( 180, 180, 180 ) );
+    Component( sf::Vector2i const& pos );
 
-    virtual void update( sf::RenderWindow *renderWindow = nullptr );
-    virtual void render( sf::RenderWindow *renderWindow );
-    virtual void setPosition( sf::Vector2i const& newPos );
+    virtual void update() override;
+    virtual void render( sf::RenderWindow *renderWindow ) override;
+    virtual void setPosition( sf::Vector2i const& newPos ) override;
 
-    inline std::vector<Connector*> const& getConnectors() const { return _connectors; };
-
-protected:
-    void createConnector( sf::Vector2i const& position, ConnectorType type, bool value = false );
-    void setText( std::string const& text ); 
-
-public:
+    inline std::vector<Connector*> const& getIConnectors() { return _iConnectors; };
+    inline std::vector<Connector*> const& getOConnectors() { return _oConnectors; };
+    inline std::vector<Connector*> const& getConnectors() { return _connectors; };
 
 protected:
-    std::vector<Connector*> _connectors{};
-    std::vector<Connector*> _inputConnectors{};
-    std::vector<Connector*> _outputConnectors{};
-    
+    void createConnector( sf::Vector2i const& position, ConnectorType type, bool initValue = false );
+    void setText( std::string const& text );
+
+private:
     sf::Font _font{};
     sf::Text _text{};
+
+    std::vector<Connector*> _connectors{};
+    std::vector<Connector*> _iConnectors{};
+    std::vector<Connector*> _oConnectors{};
 };
 
 #endif

@@ -12,44 +12,17 @@ Connector::Connector(sf::Vector2i const& pos, sf::Vector2i const& parentPos, Obj
     _shape.setFillColor( _color );
 }
 
-void Connector::update( sf::RenderWindow *renderWindow )
+void Connector::update( )
 {
     // Only update your own value if you are of type OUTPUT.
     if( _type == INPUT )
         return;
 
     _value = _parent->getValue();
-
-    // Update the value of your connection.
-    if( _connection )
-        _connection->setValue( _value );
 }
 
 void Connector::render( sf::RenderWindow *renderWindow )
 {
-    if( _connection )
-        renderWindow->draw( createLine() );
-
     renderWindow->draw( _shape );
     _shape.setFillColor( _color );
-}
-
-// TODO: Currently both sides of the connection draws a line, fix so it only draws one line.
-
-// Helper fundtion that creates a Rectangle representing a line.
-sf::RectangleShape Connector::createLine()
-{
-    sf::Vector2f connectorPosition = _shape.getPosition();
-    sf::Vector2f connectionPosition = _connection->getPosition();
-
-    float lineLength = sqrt( pow( ( connectorPosition.x - connectionPosition.x ), 2 ) + pow( ( connectorPosition.y - connectionPosition.y ), 2 ) );
-
-    sf::RectangleShape line{ sf::Vector2f{ lineLength, 5 } };
-
-    float angle = 180 + atan2( connectorPosition.y  - connectionPosition.y, connectorPosition.x - connectionPosition.x ) * 180 / M_PI ;
-
-    line.rotate( angle );
-    line.setPosition( connectorPosition );
-    
-    return line;
 }
