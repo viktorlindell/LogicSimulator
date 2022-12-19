@@ -35,4 +35,3 @@ void Game::fps_limiter()
 {
     sf::sleep( sf::milliseconds( 1000 / 60 ) - _clock.restart() );
 }
-// git commit -m "Added a 7-seg display. Limited fps to 60 & logic update to every 10:th frame"
