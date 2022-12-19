@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-Component::Component( sf::Vector2i const& pos )
-    : Object{ sf::Vector2f{ 120.f, 70.f }, sf::Color( 0x5DB53FFF ) }
+Component::Component( sf::Vector2i const& pos, sf::Vector2f const& size )
+    : Object{ size, sf::Color( 0x5DB53FFF ) }
 {
     _shape.setFillColor( _color );
     _shape.setPosition( pos.x, pos.y );

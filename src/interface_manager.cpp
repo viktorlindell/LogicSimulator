@@ -31,6 +31,9 @@ void InterfaceManager::update()
     case XOR:
         _text.setString( "Current component: XOR" );
         break;
+    case SEVEN_SEGMENT:
+        _text.setString( "Current component: 7-SEGMENT" );
+        break;
     case GROUND:
         _text.setString( "Current component: GROUND" );
         break;

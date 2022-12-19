@@ -11,7 +11,7 @@ void ObjectManager::update()
     for ( auto const& connection : _connections )
     {
         connection.first->setValue( connection.second->getValue() );
-    } 
+    }
 }
 
 void ObjectManager::render( sf::RenderWindow *renderWindow )
@@ -48,6 +48,8 @@ bool ObjectManager::createGameObject( sf::Vector2i position, uint32_t type )
         newComponent = new Or{ position };
     else if( type == ComponentType::XOR )
         newComponent = new Xor{ position };
+    else if( type == ComponentType::SEVEN_SEGMENT )
+        newComponent = new Seven_Segment{ position };
     else if( type == ComponentType::GROUND )
         newComponent = new Ground{ position };
     else if( type == ComponentType::POSITIVE )
@@ -73,6 +75,9 @@ void ObjectManager::deleteGameObject()
 void ObjectManager::createConnection( Connector *connector )
 {
     Connector *selectedConnector = static_cast<Connector*>( _selectedObject );
+    if( selectedConnector->getType() == connector->getType() )
+        return;
+
     if( selectedConnector->getType() == ConnectorType::INPUT )
     {
         if( _connections.find(selectedConnector) != _connections.end() )
@@ -88,7 +93,7 @@ void ObjectManager::createConnection( Connector *connector )
         _connections[connector] = selectedConnector;
     }
 
-    std::cout << "Created a new connection. New size is: " << _connections.size() << std::endl;
+    // std::cout << "Created a new connection. New size is: " << _connections.size() << std::endl;
 }
 
 void ObjectManager::deleteConnection( Connector *connector )
@@ -106,7 +111,7 @@ void ObjectManager::deleteConnection( Connector *connector )
     selectedConnector->setValue( false );
     connector->setValue( false );
     
-    std::cout << "Deleted a connection. New size is: " << _connections.size() << std::endl;
+    // std::cout << "Deleted a connection. New size is: " << _connections.size() << std::endl;
 }
 
 bool ObjectManager::isConnected( Connector *connector )

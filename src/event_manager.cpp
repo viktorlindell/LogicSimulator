@@ -57,12 +57,11 @@ void EventManager::leftMouseEvent()
     // Create new component 
     if( !_objectManager->getSelectedGameObject() && !component )
     {
-        if( _objectManager->createGameObject( sf::Mouse::getPosition( *_renderWindow ), _type ) ) 
-            return;
+        _objectManager->createGameObject( sf::Mouse::getPosition( *_renderWindow ), _type );
+        return;
     }
 
-    // Clicked on nothing but has something selected, do nothing!
-    if ( !component ) return;
+    if( !component ) return;
 
     // Select component
     if ( !_objectManager->getSelectedGameObject() ) 
@@ -73,18 +72,21 @@ void EventManager::leftMouseEvent()
         Connector *connector = CollisionHandler::checkCollisionPoint( component->getConnectors(), sf::Mouse::getPosition( *_renderWindow ) );
         if( connector )
             _objectManager->setSelectedGameObject( connector );
+        
         return;
     }
 
     // Deselected component
-    if( dynamic_cast<Component*>( _objectManager->getSelectedGameObject() ) == component )
+    if( _objectManager->getSelectedGameObject() == component )
     {
+        Component *selectedComponent = dynamic_cast<Component*>( _objectManager->getSelectedGameObject() );
+        if( selectedComponent )
+            if( CollisionHandler::checkCollisionRectangle( _objectManager->getGameObjects(), selectedComponent ) )
+                return;
+
         _objectManager->setSelectedGameObject( nullptr );
         return;
     }
-
-    // Something weird happend
-    if ( !dynamic_cast<Connector*>( _objectManager->getSelectedGameObject() ) ) return;
 
     // Only possibility left is that the user clicked on a connector! 
     modifyConnection( component );
@@ -107,6 +109,7 @@ void EventManager::modifyConnection( Component *component )
 
         if( c == dynamic_cast<Component*>( selectedConnector->getParent() ) ) continue;
 
+        // Known bug, can only remove connections if you start by selecting the input connector side.
         // Create connection between components.
         if( !_objectManager->isConnected( selectedConnector ) )
         {

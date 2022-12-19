@@ -26,11 +26,17 @@ public:
     void run();
 
 private:
+    void fps_limiter();
+
+private:
     sf::RenderWindow *_renderWindow;
 
     EventManager _eventManager{};
     ObjectManager _objectManager{};
     InterfaceManager _interfaceManager{};
+
+    uint32_t updateCounter{0};
+    sf::Clock _clock{};
 };
 
 #endif

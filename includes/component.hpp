@@ -16,6 +16,7 @@ enum ComponentType : uint32_t
     AND,
     OR,
     XOR,
+    SEVEN_SEGMENT,
     GROUND,
     POSITIVE,
     MAX_COMPONENTS
@@ -24,7 +25,7 @@ enum ComponentType : uint32_t
 class Component : public Object
 {
 public:
-    Component( sf::Vector2i const& pos );
+    Component( sf::Vector2i const& pos, sf::Vector2f const& size = sf::Vector2f{ 120.f, 70.f } );
 
     virtual void update() override;
     virtual void render( sf::RenderWindow *renderWindow ) override;
